@@ -1,1 +1,307 @@
-<!DOCTYPE html><html><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1'><title>Archetypon Wizard</title><link rel='stylesheet' href='styles.css'></head><body><header><h1>Archetypon Legal Structure Wizard</h1></header><main><form id='wizardForm'><fieldset><legend>Inputs</legend><label>Funding<select name='funding'><option>Government grants & foundation grants</option><option>Individual donations</option><option>Fundraising events & crowdfunding</option><option>Loans & investments</option><option>Fundraising not a big concern</option></select></label><button type='button' id='runBtn'>Generate</button><button type='button' id='pdfBtn' disabled>Download PDF</button></fieldset></form><section id='output' hidden><h2>Results</h2><div id='foundation'></div></section></main><script src='app.js'></script></body></html>
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Archetypon Legal Structure Wizard</title>
+
+  <link rel="stylesheet" href="styles.css" />
+
+  <!-- jsPDF CDN for PDF generation -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+
+          integrity="sha512-+sC6g6w3eYx4Q3kQ+zE2o5W9cJ3b9H1l4zv3wC8rZ5z05q7l0b+I0mEPIse8fG/nxP2m6tZ2v0wZJm6aJcOX6A=="
+
+          crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</head>
+
+<body>
+
+  <header>
+
+    <h1>Archetypon Legal Structure Wizard</h1>
+
+    <p>Answer the questions. Click <strong>Generate Recommendation</strong>, then <strong>Download PDF</strong>.</p>
+
+  </header>
+
+ 
+
+  <main>
+
+    <form id="wizardForm">
+
+      <fieldset>
+
+        <legend>Inputs</legend>
+
+ 
+
+        <label>1) Non-profit business plan in place?
+
+          <select name="plan">
+
+            <option value="Yes">Yes</option>
+
+            <option value="No" selected>No</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>2) Main source of funding?
+
+          <select name="funding">
+
+            <option value="Grants" selected>Government & foundation grants</option>
+
+            <option value="Donations">Individual donations</option>
+
+            <option value="Events">Fundraising events & crowdfunding</option>
+
+            <option value="Loans">Loans & investments</option>
+
+            <option value="Minimal">Fundraising not a big concern</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>3) Plan to make significant profits?
+
+          <select name="profits">
+
+            <option value="No" selected>No</option>
+
+            <option value="Yes">Yes</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>4) Risk profile
+
+          <select name="risk">
+
+            <option value="High" selected>High budget & higher-risk activities</option>
+
+            <option value="Low">Small budget & low-risk activities</option>
+
+            <option value="Unsure">Not sure</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>5) Decision-making structure
+
+          <select name="governance">
+
+            <option value="MembersBoard" selected>Members elect a board</option>
+
+            <option value="Custom">Custom structure</option>
+
+            <option value="Unsure">Not sure</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>6) Partisan political work (support a candidate)?
+
+          <select name="partisan">
+
+            <option value="No" selected>No</option>
+
+            <option value="Yes">Yes</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>7) Time/resources for compliance & reporting
+
+          <select name="capacity">
+
+            <option value="High">High</option>
+
+            <option value="Medium" selected>Medium</option>
+
+            <option value="Low">Low</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>8) Primary beneficiaries
+
+          <select name="beneficiaries">
+
+            <option value="Members">Members</option>
+
+            <option value="Communities" selected>Communities</option>
+
+            <option value="SelfCommunity">Founders/self + community</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>9) Will you want to issue tax receipts in 12–24 months?
+
+          <select name="receipts">
+
+            <option value="Yes" selected>Yes</option>
+
+            <option value="No">No</option>
+
+            <option value="Unsure">Not sure</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>10) Are your purposes exclusively charitable?
+
+          <select name="charitable">
+
+            <option value="Yes" selected>Yes</option>
+
+            <option value="Partly">Partly</option>
+
+            <option value="No">No / Not sure</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>11) Expected annual public funding (non-member donations + government grants)
+
+          <select name="publicFunds">
+
+            <option value="Under10k">< $10,000</option>
+
+            <option value="10kTo249k" selected>$10,000–$249,999</option>
+
+            <option value="250kTo499k">$250,000–$499,999</option>
+
+            <option value="500kPlus">$500,000+</option>
+
+            <option value="Unsure">Not sure</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>12) Budget band (weighting)
+
+          <select name="budget">
+
+            <option value="Under50k">< $50,000</option>
+
+            <option value="50kTo100k">$50,000–$100,000</option>
+
+            <option value="100kTo250k">$100,000–$250,000</option>
+
+            <option value="250kTo500k" selected>$250,000–$500,000</option>
+
+            <option value="500kPlus">> $500,000</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <label>13) Risk multiplier
+
+          <select name="riskMult">
+
+            <option value="Low">Low (×1.0)</option>
+
+            <option value="Medium" selected>Medium (×1.5)</option>
+
+            <option value="High">High (×2.0)</option>
+
+          </select>
+
+        </label>
+
+ 
+
+        <div class="buttons">
+
+          <button type="button" id="runBtn">Generate Recommendation</button>
+
+          <button type="button" id="pdfBtn" disabled>Download PDF</button>
+
+        </div>
+
+      </fieldset>
+
+    </form>
+
+ 
+
+    <section id="output" class="card" hidden>
+
+      <h2>Results</h2>
+
+      <div id="summary"></div>
+
+      <div id="foundation"></div>
+
+      <div id="npo"></div>
+
+      <div id="notes"></div>
+
+      <div id="links"></div>
+
+    </section>
+
+  </main>
+
+ 
+
+  <footer>
+
+    <p><small>This tool provides general guidance only; obtain legal review before filing.</small></p>
+
+  </footer>
+
+ 
+
+  <script src="app.js"></script>
+
+</body>
+
+</html>
